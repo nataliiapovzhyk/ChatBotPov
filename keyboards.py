@@ -16,3 +16,11 @@ def get_keyboard() -> InlineKeyboardMarkup:
         ],
         [InlineKeyboardButton("Details -> ", url = "https://google.com" )]
     ])
+
+def get_random_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Хочу ще факт", callback_data="random"),
+            InlineKeyboardButton("Закінчити", callback_data="start")
+        ]
+    ])

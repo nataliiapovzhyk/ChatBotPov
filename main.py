@@ -1,6 +1,6 @@
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, CallbackContext, MessageHandler, filters, \
-    CallbackQueryHandler
+    CallbackQueryHandler, PicklePersistence
 from config import Config, config
 from keyboards import REPLY_KEYBOARD, get_keyboard
 
@@ -58,11 +58,29 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.answer()
 
+BOT_COMMANDS = [
+        ("start", "Початок роботи"),
+        ("cancel", "Скасувати"),
+        ("login", "Логін"),
+        ("get_data", "Деталі чату"),
+    ]
 
-if __name__ == '__main__':
-    application = ApplicationBuilder().token(Config.token).build()
+async def post_init(app):
+    await app.bot.set_my_commands(BOT_COMMANDS)
 
-    #application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, answer))
+
+def main():
+    persistence = PicklePersistence(filepath="persistence.pickle")
+
+
+    application = (
+        ApplicationBuilder()
+        .token(Config.token)
+        .post_init(post_init)
+        .persistence(persistence)
+        .build()
+    )
+    # application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, answer))
     application.add_handler(CommandHandler('start', start_func))
     application.add_handler(CommandHandler('login', login))
     application.add_handler(CommandHandler('get_data', get_data))
@@ -73,3 +91,10 @@ if __name__ == '__main__':
     application.add_handler(CallbackQueryHandler(callback_handler))
     print("бота запущено")
     application.run_polling()
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Бота Зупинено")
