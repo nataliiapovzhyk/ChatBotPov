@@ -1,7 +1,8 @@
 import logging
 
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes, CommandHandler
+from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes, CommandHandler, ConversationHandler, \
+    MessageHandler, filters
 
 from gpt import ChatGptService
 from keyboards import get_random_keyboard
@@ -16,6 +17,8 @@ logging.basicConfig(
 # set higher logging level for httpx to avoid all GET and POST requests being logged
 logging.getLogger("httpx").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
+
+ASK_GPT = 1
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info("Start menu is selected")
@@ -43,6 +46,24 @@ async def random(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await message.edit_text(response_text,reply_markup=get_random_keyboard())
     #update.message.reply_text(response_text, reply_markup=get_random_keyboard())
 
+async def gpt_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger.info("GPT Question is selected")
+    text = load_message('gpt')
+    await send_image(update, context, 'gpt')
+    logger.info("Waiting question typing")
+    await update.message.reply_text(text)
+    return ASK_GPT
+
+async def gpt_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_text = update.message.text
+    message = await update.message.reply_text("Думаю...")
+    prompt = load_prompt('gpt')
+    chat_gpt.set_prompt(prompt + user_text)
+    response_text = chat_gpt.send_message_list()
+    await message.edit_text(response_text)
+
+    return ConversationHandler.END
+
 
 chat_gpt = ChatGptService(config.ChatGPT_TOKEN)
 app = ApplicationBuilder().token(config.BOT_TOKEN).build()
@@ -52,11 +73,27 @@ app = ApplicationBuilder().token(config.BOT_TOKEN).build()
 app.add_handler(CommandHandler('start', start))
 app.add_handler(CommandHandler('random', random))
 
+
 app.add_handler(CallbackQueryHandler(random, pattern="random"))
 app.add_handler(CallbackQueryHandler(start, pattern="start"))
 
 
+gpt_handler = ConversationHandler(
 
+    entry_points=[
+        CommandHandler("gpt", gpt_start)
+    ],
+
+    states={
+        ASK_GPT: [
+            MessageHandler(filters.TEXT & ~filters.COMMAND, gpt_question)
+        ]
+    },
+
+    fallbacks=[]
+)
+
+app.add_handler(gpt_handler)
 # Зареєструвати обробник колбеку можна так:
 # app.add_handler(CallbackQueryHandler(app_button, pattern='^app_.*'))
 #app.add_handler(CallbackQueryHandler(default_callback_handler))
