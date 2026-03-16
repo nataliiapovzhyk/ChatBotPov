@@ -1,11 +1,13 @@
-from openai import OpenAI
+from openai import OpenAI, AsyncOpenAI
 import httpx as httpx
 
 import logging
 
+from credentials import config
+
 
 class ChatGptService:
-    client: OpenAI = None
+    client: AsyncOpenAI = None
     message_list: list = None
 
     # Enable logging
@@ -18,20 +20,22 @@ class ChatGptService:
 
     def __init__(self, token):
         #token = "sk-proj-" + token[:3:-1] if token.startswith('gpt:') else token
-        self.client = OpenAI(api_key=token)
+        self.client = AsyncOpenAI(api_key=token)
         self.message_list = []
 
-    def send_message_list(self) -> str:
+    async def send_message_list(self) -> str:
 
         self.logger.info("надсилаємо запит")
 
-        completion = self.client.chat.completions.create(
-            model="gpt-4-turbo",  # gpt-4o,  gpt-4-turbo,    gpt-3.5-turbo,  GPT-4o mini
+        completion = await self.client.chat.completions.create(
+            model="gpt-4-turbo",
             messages=self.message_list,
             max_tokens=3000,
-            temperature=0.9
+            temperature=0.9,
         )
+
         message = completion.choices[0].message
+
         self.message_list.append(message)
         return message.content
 
@@ -48,3 +52,5 @@ class ChatGptService:
         self.message_list.append({"role": "system", "content": prompt_text})
         self.message_list.append({"role": "user", "content": message_text})
         return await self.send_message_list()
+
+chat_gpt = ChatGptService(config.ChatGPT_TOKEN)

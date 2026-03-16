@@ -4,8 +4,9 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes, CommandHandler, ConversationHandler, \
     MessageHandler, filters
 
-from gpt import ChatGptService
+from gpt import ChatGptService, chat_gpt
 from keyboards import get_random_keyboard
+from talk import talk_handler
 from util import (load_message, send_text, send_image, show_main_menu,
                   default_callback_handler, load_prompt)
 from credentials import config
@@ -37,11 +38,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     })
 async def random(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Randomw is selected")
+    logger.info("Random is selected")
     prompt = load_prompt('random')
     chat_gpt.set_prompt(prompt)
     message = await send_text(update, context, "Зачекайте")
-    response_text = chat_gpt.send_message_list()
+    response_text = await chat_gpt.send_message_list()
     #await send_text(update, context, response_text)
     await message.edit_text(response_text,reply_markup=get_random_keyboard())
     #update.message.reply_text(response_text, reply_markup=get_random_keyboard())
@@ -59,14 +60,14 @@ async def gpt_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
     message = await update.message.reply_text("Думаю...")
     prompt = load_prompt('gpt')
-    chat_gpt.set_prompt(prompt + user_text)
-    response_text = chat_gpt.send_message_list()
+    response_text = await chat_gpt.send_question(prompt,user_text)
+
     await message.edit_text(response_text)
 
     return ConversationHandler.END
 
 
-chat_gpt = ChatGptService(config.ChatGPT_TOKEN)
+
 app = ApplicationBuilder().token(config.BOT_TOKEN).build()
 
 # Зареєструвати обробник команди можна так:
@@ -95,6 +96,7 @@ gpt_handler = ConversationHandler(
 )
 
 app.add_handler(gpt_handler)
+app.add_handler(talk_handler)
 # Зареєструвати обробник колбеку можна так:
 # app.add_handler(CallbackQueryHandler(app_button, pattern='^app_.*'))
 #app.add_handler(CallbackQueryHandler(default_callback_handler))
