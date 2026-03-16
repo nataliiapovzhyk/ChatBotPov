@@ -55,6 +55,7 @@ async def gpt_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ASK_GPT
 
 async def gpt_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger.info("Asking user question")
     user_text = update.message.text
     message = await update.message.reply_text("Думаю...")
     prompt = load_prompt('gpt')
