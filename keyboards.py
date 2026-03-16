@@ -39,6 +39,6 @@ def get_person_keyboard() -> InlineKeyboardMarkup:
 def get_end_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Закінчити", callback_data="start")
+            InlineKeyboardButton("Закінчити", callback_data="end_talk")
         ]
     ])

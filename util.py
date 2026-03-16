@@ -14,6 +14,21 @@ def dialog_user_info_to_str(user_data) -> str:
     return '\n'.join(map(lambda k, v: (mapper[k], v), user_data.items()))
 
 
+async def show_start_menu(update, context):
+    text = load_message('main')
+    await send_image(update, context, 'main')
+    await send_text(update, context, text)
+    await show_main_menu(update, context, {
+        'start': 'Головне меню',
+        'random': 'Дізнатися випадковий цікавий факт 🧠',
+        'gpt': 'Задати питання чату GPT 🤖',
+        'talk': 'Поговорити з відомою особистістю 👤',
+        'quiz': 'Взяти участь у квізі ❓'
+        # Додати команду в меню можна так:
+        # 'command': 'button text'
+
+    })
+
 # надсилає в чат текстове повідомлення
 async def send_text(update: Update, context: ContextTypes.DEFAULT_TYPE,
                     text: str) -> Message:

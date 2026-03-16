@@ -6,10 +6,13 @@ from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes,
 
 from gpt import ChatGptService, chat_gpt
 from keyboards import get_random_keyboard
-from talk import talk_handler
+from random_handler import random
+from talk_handler import talk_handler
 from util import (load_message, send_text, send_image, show_main_menu,
-                  default_callback_handler, load_prompt)
+                  default_callback_handler, load_prompt, show_start_menu)
 from credentials import config
+
+from error_handler import error_handler
 
 # Enable logging
 logging.basicConfig(
@@ -23,29 +26,9 @@ ASK_GPT = 1
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info("Start menu is selected")
-    text = load_message('main')
-    await send_image(update, context, 'main')
-    await send_text(update, context, text)
-    await show_main_menu(update, context, {
-        'start': 'Головне меню',
-        'random': 'Дізнатися випадковий цікавий факт 🧠',
-        'gpt': 'Задати питання чату GPT 🤖',
-        'talk': 'Поговорити з відомою особистістю 👤',
-        'quiz': 'Взяти участь у квізі ❓'
-        # Додати команду в меню можна так:
-        # 'command': 'button text'
+    await show_start_menu(update, context)
 
 
-    })
-async def random(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Random is selected")
-    prompt = load_prompt('random')
-    chat_gpt.set_prompt(prompt)
-    message = await send_text(update, context, "Зачекайте")
-    response_text = await chat_gpt.send_message_list()
-    #await send_text(update, context, response_text)
-    await message.edit_text(response_text,reply_markup=get_random_keyboard())
-    #update.message.reply_text(response_text, reply_markup=get_random_keyboard())
 
 async def gpt_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info("GPT Question is selected")
@@ -70,6 +53,7 @@ async def gpt_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 app = ApplicationBuilder().token(config.BOT_TOKEN).build()
 
+app.add_error_handler(error_handler)
 # Зареєструвати обробник команди можна так:
 # app.add_handler(CommandHandler('command', handler_func))
 app.add_handler(CommandHandler('start', start))
