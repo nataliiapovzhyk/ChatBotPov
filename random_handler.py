@@ -4,14 +4,11 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes, CommandHandler, ConversationHandler, \
     MessageHandler, filters
 
-from gpt import ChatGptService, chat_gpt
+from gpt import  chat_gpt
 from keyboards import get_random_keyboard
-from talk_handler import talk_handler
 from util import (load_message, send_text, send_image, show_main_menu,
                   default_callback_handler, load_prompt)
-from credentials import config
 
-from error_handler import error_handler
 
 # Enable logging
 logging.basicConfig(

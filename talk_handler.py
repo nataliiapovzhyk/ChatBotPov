@@ -7,7 +7,7 @@ from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes,
 from gpt import chat_gpt
 from keyboards import get_person_keyboard, get_end_keyboard
 from util import (load_message, send_text, send_image, show_main_menu,
-                  default_callback_handler, load_prompt, show_start_menu)
+                  default_callback_handler, load_prompt, show_start_menu, BOT_COMMANDS)
 from credentials import config
 
 # Enable logging
