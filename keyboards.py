@@ -42,3 +42,27 @@ def get_end_keyboard() -> InlineKeyboardMarkup:
             InlineKeyboardButton("Закінчити", callback_data="end_talk")
         ]
     ])
+
+def get_quiz_topic_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Python", callback_data="quiz_prog"),
+            InlineKeyboardButton("Математика", callback_data="quiz_math"),
+            InlineKeyboardButton("Біологія", callback_data="quiz_biology")
+
+        ]
+    ])
+
+
+def get_quiz_play_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Ще питання", callback_data="quiz_more"),
+            InlineKeyboardButton("Змінити тему", callback_data="topic_quiz")
+
+        ],
+        [
+            InlineKeyboardButton("Завершити", callback_data="end_quiz"),
+
+        ]
+    ])

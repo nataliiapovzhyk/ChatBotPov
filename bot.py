@@ -6,6 +6,7 @@ from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes,
 
 
 from question_handler import  gpt_handler
+from quiz_handler import quiz_handler
 from random_handler import random
 from talk_handler import talk_handler
 from util import (load_message, send_text, send_image, show_main_menu,
@@ -44,6 +45,7 @@ app.add_handler(CallbackQueryHandler(start, pattern="start"))
 
 app.add_handler(gpt_handler)
 app.add_handler(talk_handler)
+app.add_handler(quiz_handler)
 # Зареєструвати обробник колбеку можна так:
 # app.add_handler(CallbackQueryHandler(app_button, pattern='^app_.*'))
 #app.add_handler(CallbackQueryHandler(default_callback_handler))
