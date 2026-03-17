@@ -22,7 +22,6 @@ class ChatGptService:
     def __init__(self, token):
         #token = "sk-proj-" + token[:3:-1] if token.startswith('gpt:') else token
         self.client = AsyncOpenAI(api_key=token)
-        #self.message_list = []
 
 
     def _get_message_list(self, context: ContextTypes.DEFAULT_TYPE) -> list:
