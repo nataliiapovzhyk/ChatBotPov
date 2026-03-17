@@ -31,9 +31,9 @@ class ChatGptService:
 
     async def send_message_list(self, context: ContextTypes.DEFAULT_TYPE) -> str:
 
-        self.logger.info("надсилаємо запит")
+        self.logger.info("send_message_list надсилаємо запит")
         message_list = self._get_message_list(context)
-
+        #self.logger.info(message_list)
         completion = await self.client.chat.completions.create(
             model="gpt-4-turbo",
             messages=message_list,
@@ -47,6 +47,10 @@ class ChatGptService:
             "role": "assistant",
             "content": message.content
         })
+
+        #self.logger.info(message_list)
+        self.logger.info("Відповідь отримано і оновлено в список повідомлень")
+
         return message.content
 
     def set_prompt(self,context: ContextTypes.DEFAULT_TYPE, prompt_text: str) -> None:
