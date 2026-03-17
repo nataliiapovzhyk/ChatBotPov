@@ -54,3 +54,5 @@ class ChatGptService:
         return await self.send_message_list()
 
 chat_gpt = ChatGptService(config.ChatGPT_TOKEN)
+
+
