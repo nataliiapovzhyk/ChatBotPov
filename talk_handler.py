@@ -38,14 +38,14 @@ async def connect_person(update: Update, context: ContextTypes.DEFAULT_TYPE):
     person = query.data.replace("talk_", "")
     context.user_data["person"] = person
     prompt = load_prompt(query.data)
-    chat_gpt.set_prompt(prompt)
+    chat_gpt.set_prompt(context,prompt)
 
     await send_image(update, context, query.data)
 
     message = await send_text(update, context,"Твій співбесідник під'єднується, зачекай...")
-    #chat_gpt.set_prompt(question)
 
-    response_text = await chat_gpt.send_message_list()
+
+    response_text = await chat_gpt.send_message_list(context)
 
     await message.edit_text(response_text)
 
@@ -59,7 +59,7 @@ async def talk_to_person(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = await send_text(update, context, "Думаю...")
 
     logger.info("Надсилаємо запит до GPT")
-    response_text = await chat_gpt.add_message(question)
+    response_text = await chat_gpt.add_message(context, question)
 
     await message.edit_text(response_text, reply_markup=get_end_keyboard())
 

@@ -31,7 +31,7 @@ async def gpt_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
     message = await update.message.reply_text("Думаю...")
     prompt = load_prompt('gpt')
-    response_text = await chat_gpt.send_question(prompt,user_text)
+    response_text = await chat_gpt.send_question(context,prompt,user_text)
 
     await message.edit_text(response_text)
 
