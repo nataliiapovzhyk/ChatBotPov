@@ -10,7 +10,6 @@ from credentials import config
 
 class ChatGptService:
     client: AsyncOpenAI = None
-    message_list: list = None
 
     # Enable logging
     logging.basicConfig(
