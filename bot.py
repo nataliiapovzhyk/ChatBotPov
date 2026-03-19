@@ -4,7 +4,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes, CommandHandler, ConversationHandler, \
     MessageHandler, filters
 
-
+from translate_handler import translate_handler
 from question_handler import  gpt_handler
 from quiz_handler import quiz_handler
 from random_handler import random
@@ -39,6 +39,7 @@ app.add_handler(CommandHandler('start', start))
 app.add_handler(CommandHandler('random', random))
 
 
+
 app.add_handler(CallbackQueryHandler(random, pattern="random"))
 app.add_handler(CallbackQueryHandler(start, pattern="start"))
 
@@ -46,6 +47,7 @@ app.add_handler(CallbackQueryHandler(start, pattern="start"))
 app.add_handler(gpt_handler)
 app.add_handler(talk_handler)
 app.add_handler(quiz_handler)
+app.add_handler(translate_handler)
 # Зареєструвати обробник колбеку можна так:
 # app.add_handler(CallbackQueryHandler(app_button, pattern='^app_.*'))
 #app.add_handler(CallbackQueryHandler(default_callback_handler))

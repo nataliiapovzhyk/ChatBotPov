@@ -33,7 +33,7 @@ class ChatGptService:
 
         self.logger.info("send_message_list надсилаємо запит")
         message_list = self._get_message_list(context)
-        #self.logger.info(message_list)
+        self.logger.info(f"Before updating message list {message_list}")
         completion = await self.client.chat.completions.create(
             model="gpt-4-turbo",
             messages=message_list,
@@ -48,7 +48,7 @@ class ChatGptService:
             "content": message.content
         })
 
-        #self.logger.info(message_list)
+        self.logger.info(f"After updating message list {message_list}")
         self.logger.info("Відповідь отримано і оновлено в список повідомлень")
 
         return message.content

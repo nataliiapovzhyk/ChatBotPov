@@ -66,3 +66,17 @@ def get_quiz_play_keyboard() -> InlineKeyboardMarkup:
 
         ]
     ])
+
+def get_translate_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Англійська", callback_data="translate_eng")
+        ],
+        [
+            InlineKeyboardButton("Французька", callback_data="translate_fra")
+        ]
+        ,
+        [
+            InlineKeyboardButton("Німецька", callback_data="translate_ger")
+        ]
+    ])
