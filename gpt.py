@@ -1,4 +1,4 @@
-from openai import OpenAI, AsyncOpenAI
+from openai import  AsyncOpenAI
 import httpx as httpx
 
 import logging
