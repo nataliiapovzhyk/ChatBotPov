@@ -28,7 +28,7 @@ def get_results(context: ContextTypes.DEFAULT_TYPE):
     return context.user_data["quiz_results"]
 
 async def quiz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Quiz menu is selected")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Quiz menu is selected")
     get_results(context)
     context.user_data["quiz_results"] = {
         "total": 0,
@@ -38,7 +38,7 @@ async def quiz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
     await send_image(update, context, 'quiz')
-    logger.info("QUIZ _ Waiting topic selection")
+    logger.info(f"Chat ID: {update.effective_chat.id}: QUIZ _ Waiting topic selection")
     prompt = load_prompt('quiz')
     chat_gpt.set_prompt(context, prompt)
 
@@ -47,7 +47,7 @@ async def quiz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return SELECT_TOPIC
 
 async def quiz_change_topic(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Quiz change topic is ongoing ")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Quiz change topic is ongoing ")
     text = load_message('quiz')
 
     message = await send_text(update, context, "Думаю...")
@@ -56,7 +56,7 @@ async def quiz_change_topic(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return SELECT_TOPIC
 
 async def quiz_play(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Quiz play is ongoing ")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Quiz play is ongoing ")
     query = update.callback_query
     await query.answer()
 
@@ -69,7 +69,7 @@ async def quiz_play(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ANSWER_QUIZ
 
 async def quiz_check_answer(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Quiz check answer is ongoing ")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Quiz check answer is ongoing ")
     user_answer = update.message.text
     gpt_evaluation = await chat_gpt.add_message(context, user_answer)
 
@@ -82,7 +82,7 @@ async def quiz_check_answer(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ANSWER_QUIZ
 
 async def end_quiz(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Quiz end selected")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Quiz end selected")
     total = context.user_data["quiz_results"]["total"]
     correct = context.user_data["quiz_results"]["correct_total"]
     await send_text(update, context, f"Всього зіграно питань: {total}. З них вірно: {correct}. Результат: {correct / total}")
