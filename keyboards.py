@@ -80,3 +80,12 @@ def get_translate_keyboard() -> InlineKeyboardMarkup:
             InlineKeyboardButton("Німецька", callback_data="translate_ger")
         ]
     ])
+
+def get_translate_change_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Змінити мову", callback_data="translate_change"),
+            InlineKeyboardButton("Завершити", callback_data="end_translate")
+        ]
+
+    ])

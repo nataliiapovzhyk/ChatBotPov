@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 async def random(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Random handler is selected")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Random handler is selected")
     prompt = load_prompt('random')
     chat_gpt.set_prompt(context, prompt)
     message = await send_text(update, context, "Зачекайте")

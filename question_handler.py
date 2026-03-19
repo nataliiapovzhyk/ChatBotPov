@@ -19,15 +19,15 @@ logger = logging.getLogger(__name__)
 
 ASK_GPT = 1
 async def gpt_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("GPT Question is selected")
+    logger.info(f"Chat ID: {update.effective_chat.id}: GPT Question is selected")
     text = load_message('gpt')
     await send_image(update, context, 'gpt')
-    logger.info("Waiting question typing")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Waiting question typing")
     await update.message.reply_text(text)
     return ASK_GPT
 
 async def gpt_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Asking user question")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Asking user question")
     user_text = update.message.text
     message = await update.message.reply_text("Думаю...")
     prompt = load_prompt('gpt')

@@ -22,16 +22,16 @@ logger = logging.getLogger(__name__)
 SELECT_PERSON, TALK_TO_PERSON = 1, 2
 
 async def talk_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Talk menu is selected")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Talk menu is selected")
 
     await send_image(update, context, 'talk')
-    logger.info("Waiting selection")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Waiting selection")
     text = load_message('talk')
     await update.message.reply_text(text, reply_markup=get_person_keyboard())
     return SELECT_PERSON
 
 async def connect_person(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Hero menu is selected")
+    logger.info(f"Chat ID: {update.effective_chat.id}:Hero menu is selected")
     query = update.callback_query
     await query.answer()
 
@@ -53,12 +53,12 @@ async def connect_person(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def talk_to_person(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Запитання отримали")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Запитання отримали")
     question = update.message.text
 
     message = await send_text(update, context, "Думаю...")
 
-    logger.info("Надсилаємо запит до GPT")
+    logger.info(f"Chat ID: {update.effective_chat.id}: Надсилаємо запит до GPT")
     response_text = await chat_gpt.add_message(context, question)
 
     await message.edit_text(response_text, reply_markup=get_end_keyboard())
@@ -66,7 +66,7 @@ async def talk_to_person(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return TALK_TO_PERSON
 
 async def end_talk(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("end talk selected")
+    logger.info(f"Chat ID: {update.effective_chat.id}: end talk selected")
     await send_text(update, context, "Розмову завершено.")
     await show_start_menu(update, context)
     return ConversationHandler.END
