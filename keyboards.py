@@ -89,3 +89,15 @@ def get_translate_change_keyboard() -> InlineKeyboardMarkup:
         ]
 
     ])
+def get_words_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Навчання", callback_data="words_learn"),
+            InlineKeyboardButton("Тест", callback_data="words_test")
+        ],
+        [
+            InlineKeyboardButton("Результати", callback_data="words_stat")
+
+        ]
+
+    ])

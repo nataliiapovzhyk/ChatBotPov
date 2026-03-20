@@ -14,6 +14,7 @@ from util import (load_message, send_text, send_image, show_main_menu,
 from credentials import config
 
 from error_handler import error_handler
+from words_handler import words_handler
 
 # Enable logging
 logging.basicConfig(
@@ -48,6 +49,7 @@ app.add_handler(gpt_handler)
 app.add_handler(talk_handler)
 app.add_handler(quiz_handler)
 app.add_handler(translate_handler)
+app.add_handler(words_handler)
 # Зареєструвати обробник колбеку можна так:
 # app.add_handler(CallbackQueryHandler(app_button, pattern='^app_.*'))
 #app.add_handler(CallbackQueryHandler(default_callback_handler))
