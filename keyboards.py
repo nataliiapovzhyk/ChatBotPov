@@ -92,8 +92,43 @@ def get_translate_change_keyboard() -> InlineKeyboardMarkup:
 def get_words_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Навчання", callback_data="words_learn"),
-            InlineKeyboardButton("Тест", callback_data="words_test")
+            InlineKeyboardButton("Вчити нові слова", callback_data="words_learn"),
+            InlineKeyboardButton("Повторити", callback_data="words_repeat")
+
+        ],
+        [
+            InlineKeyboardButton("Тестування", callback_data="words_test")
+
+        ],
+        [
+            InlineKeyboardButton("Результати", callback_data="words_stat")
+
+        ]
+
+    ])
+
+def get_words_learn_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Нове слово", callback_data="words_learn"),
+            InlineKeyboardButton("Повторити", callback_data="words_repeat")
+        ],
+        [
+            InlineKeyboardButton("Тестування", callback_data="words_test")
+
+        ],
+        [
+            InlineKeyboardButton("Результати", callback_data="words_stat")
+
+        ]
+
+    ])
+
+def get_words_test_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Ще слово", callback_data="words_test"),
+            InlineKeyboardButton("Навчання", callback_data="words_learn")
         ],
         [
             InlineKeyboardButton("Результати", callback_data="words_stat")

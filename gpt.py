@@ -29,6 +29,8 @@ class ChatGptService:
             context.user_data["message_list"] = []
         return context.user_data["message_list"]
 
+
+
     async def send_message_list(self, context: ContextTypes.DEFAULT_TYPE) -> str:
 
         self.logger.info(f"Сhat_id={context._chat_id}: send_message_list надсилаємо запит")
@@ -48,7 +50,7 @@ class ChatGptService:
             "content": message.content
         })
 
-        #self.logger.info(f"Сhat_id={context._chat_id}: After updating message list {message_list}")
+        self.logger.info(f"Сhat_id={context._chat_id}: After updating message list {message_list}")
         self.logger.info(f"Сhat_id={context._chat_id}: Відповідь отримано і оновлено в список повідомлень")
 
         return message.content

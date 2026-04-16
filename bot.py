@@ -2,7 +2,7 @@ import logging
 
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes, CommandHandler, ConversationHandler, \
-    MessageHandler, filters
+    MessageHandler, filters, PicklePersistence
 
 from translate_handler import translate_handler
 from question_handler import  gpt_handler
@@ -30,8 +30,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info("Start menu is selected")
     await show_start_menu(update, context)
 
+persistence = PicklePersistence(filepath="bot_data.pkl")
 
-app = ApplicationBuilder().token(config.BOT_TOKEN).build()
+app = (ApplicationBuilder()
+       .token(config.BOT_TOKEN)
+       .persistence(persistence)
+       .build())
+
+
+
 
 app.add_error_handler(error_handler)
 # Зареєструвати обробник команди можна так:
